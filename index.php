@@ -9,6 +9,7 @@ $db = [
 
 $word = getParam('term');
 $language = strtolower(stripSpaces(getParam('sprache')));
+$language2 = strtolower(stripSpaces(getParam('sprache2')));
 
 switch($language) {
     case 'englisch':
@@ -25,17 +26,18 @@ $dbh = null;
 try {
     $dbh = new PDO('mysql:host='.$db['host'].';dbname='.$db['dbname'].';charset=utf8', $db['user'], $db['password']);
     // Bei zu vielen Einträgen, sollten wir diesen Code anpassen.
-    $sql = "SELECT * FROM deutsch_$language WHERE deutsch LIKE concat('%', ?, '%') OR $language LIKE concat('%', ?, '%')";
+    $sql = "SELECT $language2 FROM deutsch_$language WHERE $language2 LIKE concat('%', ?, '%')";
     $sth = $dbh->prepare($sql);
     $sth->bindParam(1, $word);
-    $sth->bindParam(2, $word);
     if(!$sth->execute()) {
         http_response_code(400); // Bad Request
         exit(1);
     }
-    $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+    $result = $sth->fetchAll(PDO::FETCH_COLUMN);
+
     header('Content-Type: text/html; charset=UTF-8');
     echo json_encode($result);
+    //print_r($result);
 }
 catch(PDOException $e) {
     // Kann im Client abgefragt und so festgestellt werden,
