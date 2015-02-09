@@ -7,7 +7,7 @@ $db = [
     'password' => 'vokabeln'
 ];
 
-$word = getParam('vokabel');
+$word = getParam('term');
 $language = strtolower(stripSpaces(getParam('sprache')));
 
 switch($language) {
