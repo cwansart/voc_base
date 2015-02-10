@@ -14,9 +14,9 @@ $language2 = strtolower(stripSpaces(getParam('sprache2')));
 switch($language) {
     case 'englisch':
         break;
-    case 'französisch':
-        $language = 'franzoesisch';
-        break;
+    //case 'französisch':
+    //    $language = 'franzoesisch';
+    //    break;
     default:
         http_response_code(400); // Bad Request
         exit(1);
